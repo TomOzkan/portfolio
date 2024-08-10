@@ -22,7 +22,7 @@ export default function Home() {
 
             <FlipWordsComponent />
             <div className="text-start text-gray-600 w-2/3 mx-auto text-lg">
-              Hello 👋 I'm interested in learning new technologies and always looking <Underline text="for new challenges." />
+              Hello 👋 I&#39;m interested in learning new technologies and always looking <Underline text="for new challenges." />
             </div>
           </div>
           <div className="image flex justify-center md:justify-start">

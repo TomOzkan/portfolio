@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from "framer-motion"
+import Image from 'next/image';
 type BadgeProps = {
   name: string;
   color: 'blue' | 'green' | 'yellow' | 'orange' | 'white' | 'black' | 'purple' | 'red' | 'pink';
@@ -25,7 +26,7 @@ export default function Badge(props: BadgeProps) {
   return (
     <div>
       <motion.div drag dragConstraints={{ left: 0, right: 0, top:0, bottom:0 }}dragElastic={1} className={`cursor-grab item px-2 p-1 gap-1 rounded w-fit flex flex-row  ${badgeColorClass}`}>
-        {props.icon ? <img src={props.icon} alt={props.name} /> : null}
+        {props.icon ? <Image src={props.icon} alt={props.name} width={8} height={8}/> : null}
         <h1 className="text-md font-semibold uppercase">{props.name}</h1>
       </motion.div>
     </div>
