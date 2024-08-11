@@ -43,7 +43,6 @@ export default function Contact() {
         setTextMessage('Email sent successfully, I will get back to you soon.');
         setIsModalOpen(false);
       } else {
-        console.log(response)
         setTextMessage('An error occurred. Please try again.');
         setIsModalOpen(false);
       }
