@@ -49,7 +49,7 @@ export default function Card(props: Props) {
           </div>
         </div>
       ) : null}
-      <div onClick={() => setIsModal(true)} className={`cursor-pointer w-full md:w-1/5 p-4 my-2 md:my-8 md:mx-4 rounded-lg duration-200 bg-slate-100 ${hoverColorClass}`}>
+      <div onClick={() => setIsModal(true)} className={`cursor-pointer w-full lg:w-1/5 p-4 my-2 lg:my-8 lg:mx-4 rounded-lg duration-200 bg-slate-100 ${hoverColorClass}`}>
         <Image src={props.src} alt={props.alt} width={300} height={200} className="justify-between w-full object-contain min-h-44 max-h-44 rounded-md" />
         <h1 className="my-2 font-semibold text-xl">{props.title}</h1>
         <p>{props.description}</p>
