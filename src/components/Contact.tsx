@@ -125,7 +125,7 @@ export default function Contact() {
         onClick={handleCopy}
         className="cursor-pointer text-center mt-2 mb-12 flex flex-row gap-1 items-center"
       >
-                <p className="inline-flex font-light text-sm text-gray-500 "> Or take my mail ;)  </p> 
+        <p className="inline-flex font-light text-sm text-gray-500 "> Or take my mail ;)  </p>
         {isCopied ? (
           <Image src="/Copywhite.png" alt="check icon" width={20} height={20} />
         ) : (

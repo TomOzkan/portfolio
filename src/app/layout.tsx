@@ -17,22 +17,19 @@ export default function RootLayout({
   }
   return (
     <html lang="en">
-
       <body className={"m-0 p-0 relative"}>
-      
-      <div className="flex flex-row mt-4 mr-4 fixed right-0 justify-end">
-
+        <div className="flex flex-row mt-4 mr-4 fixed right-0 justify-end">
           <Link href={"https://github.com/TomOzkan"}> <Image src="/Github.png" alt="github icon" height={44} width={44}></Image> </Link>
           <Link href="https://www.linkedin.com/in/tom-ozkan-133693210/"><Image src="/Linkedin.png" alt="linkedin icon" height={44} width={44}></Image></Link>
-      </div>
-      
+        </div>
+
         {children}
-        
-        <Footer/>
-          <DotPattern/>
+
+        <Footer />
+        <DotPattern />
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        </body>
+      </body>
 
     </html>
   );

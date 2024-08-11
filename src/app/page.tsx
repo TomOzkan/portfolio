@@ -62,13 +62,13 @@ export default function Home() {
         <Card src="/teliae.png" alt="Teliae logo" title="Web developper" description={textCard.teliae.description} longtext={textCard.teliae.longtext} language={textCard.teliae.languages} hover="purple" />
         <Card src="/G4.png" alt="G4 logo" title="Project Management" description={textCard.g4.description} longtext={textCard.g4.longtext} language={textCard.g4.languages} hover="yellow" />
         <Card src="/Pibaho.png" alt="Pibaho logo" title="Web developper" description={textCard.pibaho.description} longtext={textCard.pibaho.longtext} language={textCard.pibaho.languages} hover="green" />
-        <Card src="/lycee.jpeg" alt="Lycée logo" title="Superior technician SNIR" description={textCard.bts.description} longtext={textCard.bts.longtext} language={textCard.bts.languages}hover="orange" />
+        <Card src="/lycee.jpeg" alt="Lycée logo" title="Superior technician SNIR" description={textCard.bts.description} longtext={textCard.bts.longtext} language={textCard.bts.languages} hover="orange" />
       </div>
       <h1 className="text-3xl text-center text-gray-600 mt-8">Stay in touch 📬</h1>
       <div className="justify-center flex flex-col items-center">
-        <Contact/>
+        <Contact />
       </div>
-      
+
     </div>
   );
 }

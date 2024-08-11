@@ -28,7 +28,6 @@ export default function Card(props: Props) {
     pink: 'hover:bg-pink-500 hover:text-white',
   };
   const hoverColorClass = colorClasses[props.hover];
-  console.log('Languages prop:', props.language);
   return (
     <>
       {isModal ? (
