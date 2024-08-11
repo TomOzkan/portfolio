@@ -64,7 +64,7 @@ export default function Contact() {
     <div>
       {isModalOpen && (
         <div className="z-50 fixed top-0 left-0 w-full h-full bg-black backdrop-blur-md bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-4 w-3/5 rounded-lg">
+          <div className="bg-white p-4 w-full lg:w-3/5 rounded-lg">
             <div
               onClick={() => setIsModalOpen(false)}
               className="flex justify-center text-white font-semibold bg-gray-400 w-6 h-6 hover:bg-red-600 rounded-full cursor-pointer"

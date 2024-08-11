@@ -33,7 +33,7 @@ export default function Card(props: Props) {
       {isModal ? (
         <div className="z-50 fixed duration-100 top-0 left-0 w-full h-full bg-black backdrop-blur-md bg-opacity-50 flex justify-center items-center">
 
-          <div className="bg-white p-4 w-3/5 rounded-lg">
+          <div className="bg-white p-4 w-full lg:w-3/5 rounded-lg">
             <div onClick={() => setIsModal(false)} className="flex justify-center text-white font-semibold bg-gray-400 w-6 h-6 hover:bg-red-600 rounded-full">X</div>
             <Image src={props.src} alt={props.alt} width={300} height={200} className="justify-between w-full object-contain min-h-44 max-h-44 rounded-md" />
             <h1 className="my-2 font-semibold text-xl">{props.title}</h1>
