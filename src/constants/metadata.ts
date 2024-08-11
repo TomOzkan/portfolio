@@ -64,13 +64,13 @@ export const commonMetadata: Metadata = {
         alt: "Preview of Tom Ozkan's portfolio",
       },
     ],
-    description: "Portfolio of Tom Ozkan, a full-stack developer specializing in React, Node.js, and more.",
+    description: "Portfolio of Tom Ozkan, a full-stack developer.",
     siteName: "Tom Ozkan Portfolio",
   },
   twitter: {
     card: "summary_large_image",
     title: "Tom Ozkan - Full-Stack Developer",
-    description: "Portfolio of Tom Ozkan, a full-stack developer specializing in React, Node.js, and more.",
+    description: "Portfolio of Tom Ozkan, a full-stack developer.",
     images: {
       url: "https://tomozkan.fr/card.png",
       width: 1200,
