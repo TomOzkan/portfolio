@@ -22,7 +22,7 @@ export default function Home() {
           <div className="flex flex-col text-center">
 
             <FlipWordsComponent />
-            <div className="text-start text-gray-600 w-2/3 mx-auto mt-auto text-lg">
+            <div className="text-start text-gray-600 w-2/3 mx-auto  mt-auto text-lg">
               Hello 👋 I&#39;m interested in learning new technologies and always looking <Underline text="for new challenges 🚀" />
             </div>
           </div>
@@ -38,7 +38,7 @@ export default function Home() {
         </div>
 
       </div>
-      <div className="w-full flex flex-row justify-center flex-wrap gap-2 mt-32 lg:-mt-8">
+      <div className="w-full flex flex-row justify-center flex-wrap gap-2 mt-64 sm:mt-32 lg:-mt-8">
         <Badge name="html" color="orange" />
         <Badge name="css" color="blue" />
         <Badge name="Javascript" color="yellow" />
