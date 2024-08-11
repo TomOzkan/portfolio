@@ -26,7 +26,7 @@ export default function Home() {
               Hello 👋 I&#39;m interested in learning new technologies and always looking <Underline text="for new challenges 🚀" />
             </div>
           </div>
-          <div className="image flex justify-center lg:justify-start">
+          <div className="flex justify-center mt-80 sm:mt-0 lg:justify-start">
             <Image
               src='/mypp.jpg'
               alt={mainInformation.alt}
@@ -38,7 +38,7 @@ export default function Home() {
         </div>
 
       </div>
-      <div className="w-full flex flex-row justify-center flex-wrap gap-2 mt-64 sm:mt-32 lg:-mt-8">
+      <div className="w-full flex flex-row justify-center flex-wrap gap-2 mt-96 sm:mt-32 lg:-mt-8">
         <Badge name="html" color="orange" />
         <Badge name="css" color="blue" />
         <Badge name="Javascript" color="yellow" />
