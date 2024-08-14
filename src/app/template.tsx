@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function template({ children }: { children: React.ReactNode }) {
+export default function Template({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   if (isLoading) {
     return (<PageTransition isLoading={isLoading} setIsLoading={setIsLoading} />)
