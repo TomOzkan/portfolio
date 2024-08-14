@@ -11,12 +11,11 @@ import Contact from "@/components/Contact";
 
 
 
-export default function Home() {
 
+export default function Home() {
 
   return (
     <div>
-
       <div className="h-[20rem] container mx-auto my-4 flex justify-center">
         <div className="flex justify-center mt-32 lg:mt-0 flex-col-reverse lg:flex-row items-center">
           <div className="flex flex-col text-center">
