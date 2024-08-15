@@ -52,7 +52,6 @@ export default function Card(props: Props) {
         <Image src={props.src} alt={props.alt} width={300} height={200} className="justify-between w-full object-contain min-h-44 max-h-44 rounded-md" />
         <h1 className="my-2 font-semibold text-xl">{props.title}</h1>
         <p>{props.description}</p>
-
       </div>
     </>
   );
