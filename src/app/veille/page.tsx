@@ -14,7 +14,6 @@ const TOPICS = [
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-
   const rawData = atob(base64);
   return Uint8Array.from(Array.from(rawData).map((char) => char.charCodeAt(0)));
 }
@@ -81,12 +80,46 @@ export default function NewsPage() {
       });
   }, [selected]);
 
+  const handleSubscribe = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") return;
+
+      const reg = await navigator.serviceWorker.ready;
+      const res = await fetch("/api/subscribe-key");
+      const { publicKey } = await res.json();
+      const convertedKey = urlBase64ToUint8Array(publicKey);
+
+      const subscription = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: convertedKey,
+      });
+
+      await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(subscription),
+      });
+
+      alert("✅ Notifications activées !");
+    } catch (error) {
+      console.error("Erreur d'abonnement :", error);
+    }
+  };
+
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-4">
-        Veille Tech : {TOPICS.find((t) => t.key === selected)?.label}
-      </h1>
-
+      <div className="flex items-center justify-stretch gap-8 ">
+        <h1 className="text-3xl font-bold">
+          Veille Tech : {TOPICS.find((t) => t.key === selected)?.label}
+        </h1>
+      </div>
+      <button
+        onClick={handleSubscribe}
+        className="text-sm text-gray-500 border border-gray-300 px-3 py-1 my-4 rounded hover:text-black"
+      >
+        🔔 S&apos;abonner
+      </button>
       {/* Menu burger mobile */}
       <div className="sm:hidden mb-4">
         <button
