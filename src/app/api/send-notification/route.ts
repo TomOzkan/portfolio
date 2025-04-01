@@ -1,9 +1,14 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 import webpush from "web-push";
 
 export async function GET() {
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY;
   const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY;
 
@@ -15,27 +20,24 @@ export async function GET() {
   }
 
   webpush.setVapidDetails(
-    "mailto:tomozkan0@icloud.com",
+    "mailto:admin@tonsite.com",
     VAPID_PUBLIC_KEY,
     VAPID_PRIVATE_KEY
   );
 
-  const subscriptionsPath = path.resolve("./subscriptions.json");
-  let subscriptions = [];
+  const { data: subscriptions, error } = await supabase
+    .from("subscriptions")
+    .select("*");
 
-  try {
-    const rawData = await fs.readFile(subscriptionsPath, "utf-8");
-    const parsed = JSON.parse(rawData);
-    if (Array.isArray(parsed)) {
-      subscriptions = parsed;
-    } else {
-      throw new Error("subscriptions.json must contain an array");
-    }
-  } catch (error) {
+  if (error) {
     return NextResponse.json(
-      { error: "subscriptions.json illisible ou absent" },
+      { error: "Erreur de lecture Supabase" },
       { status: 500 }
     );
+  }
+
+  if (!subscriptions || subscriptions.length === 0) {
+    return NextResponse.json({ message: "Aucun abonné." });
   }
 
   const notification = {

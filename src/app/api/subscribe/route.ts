@@ -1,30 +1,36 @@
 import { NextResponse } from "next/server";
-import * as fsPromises from "fs/promises";
-import * as pathModule from "path";
-
-const SUBSCRIPTION_FILE = pathModule.resolve("./subscriptions.json");
+import { createClient } from "@supabase/supabase-js";
 
 export async function POST(req: Request) {
-  const body = await req.json();
-  const fileExists = await fsPromises
-    .stat(SUBSCRIPTION_FILE)
-    .then(() => true)
-    .catch(() => false);
-
-  const subscriptions = fileExists
-    ? JSON.parse(await fsPromises.readFile(SUBSCRIPTION_FILE, "utf-8"))
-    : [];
-
-  // éviter les doublons
-  const alreadyExists = subscriptions.some(
-    (sub: any) => sub.endpoint === body.endpoint
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
-  if (!alreadyExists) {
-    subscriptions.push(body);
-    await fsPromises.writeFile(
-      SUBSCRIPTION_FILE,
-      JSON.stringify(subscriptions, null, 2)
-    );
+
+  const body = await req.json();
+
+  // Vérifier si l'abonnement existe déjà
+  const { data: existing, error: fetchError } = await supabase
+    .from("subscriptions")
+    .select("endpoint")
+    .eq("endpoint", body.endpoint);
+
+  if (fetchError) {
+    console.error("Erreur de lecture Supabase:", fetchError);
+    return NextResponse.json({ error: "Erreur côté serveur" }, { status: 500 });
+  }
+
+  if (existing && existing.length === 0) {
+    const { error: insertError } = await supabase
+      .from("subscriptions")
+      .insert([body]);
+    if (insertError) {
+      console.error("Erreur d'insertion Supabase:", insertError);
+      return NextResponse.json(
+        { error: "Erreur à l'enregistrement" },
+        { status: 500 }
+      );
+    }
   }
 
   return NextResponse.json({ ok: true });
