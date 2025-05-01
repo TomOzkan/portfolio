@@ -1,7 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Heart, HeartIcon } from "lucide-react";
 import Image from "next/image";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
+import { User } from "@supabase/supabase-js";
 
 const TOPICS = [
   { key: "default", label: "Tout" },
@@ -19,25 +22,46 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 export default function NewsPage() {
+  const router = useRouter();
   const [articles, setArticles] = useState<
     {
-      urlToImage?: string;
-      title: string;
-      description: string;
-      source?: { name: string };
-      language?: string;
       url: string;
+      title: string;
+      urlToImage?: string;
+      description?: string;
+      source?: { name?: string };
+      language?: string;
     }[]
   >([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState("default");
   const [showMenu, setShowMenu] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [savedUrls, setSavedUrls] = useState(new Set());
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) router.push("/login");
+      else setUser(data.user);
+    });
+  }, [router]);
+
+  useEffect(() => {
+    if (user) {
+      supabase
+        .from("saved_articles")
+        .select("url")
+        .eq("user_id", user.id)
+        .then(({ data }) => {
+          setSavedUrls(new Set(data?.map((a) => a.url)));
+        });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js");
     }
-
     if ("Notification" in window && Notification.permission !== "granted") {
       Notification.requestPermission();
     }
@@ -107,6 +131,40 @@ export default function NewsPage() {
     }
   };
 
+  const toggleFavorite = async (article: {
+    url: string;
+    title: string;
+    urlToImage?: string;
+    source?: { name?: string };
+  }) => {
+    if (!user) return;
+
+    if (savedUrls.has(article.url)) {
+      const { error } = await supabase
+        .from("saved_articles")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("url", article.url);
+
+      if (!error) {
+        const updated = new Set(savedUrls);
+        updated.delete(article.url);
+        setSavedUrls(updated);
+      }
+    } else {
+      const { error } = await supabase.from("saved_articles").insert({
+        user_id: user.id,
+        title: article.title,
+        url: article.url,
+        image: article.urlToImage,
+        source: article.source?.name,
+        published_at: new Date().toISOString(),
+      });
+      if (!error)
+        setSavedUrls(new Set(Array.from(savedUrls).concat(article.url)));
+    }
+  };
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-stretch gap-8 ">
@@ -120,6 +178,7 @@ export default function NewsPage() {
       >
         🔔 S&apos;abonner
       </button>
+
       {/* Menu burger mobile */}
       <div className="sm:hidden mb-4">
         <button
@@ -197,16 +256,33 @@ export default function NewsPage() {
                 <span>{article.source?.name}</span>
                 <span>{article.language === "fr" ? "🇫🇷" : "🇬🇧"}</span>
               </div>
-              <a
-                href={article.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-block text-blue-600 hover:underline text-sm font-medium"
-              >
-                Lire l&apos;article →
-              </a>
+              <div className="mt-4 flex justify-between items-center">
+                <a
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-blue-600 hover:underline text-sm font-medium"
+                >
+                  Lire l&apos;article →
+                </a>
+                <button
+                  onClick={() => toggleFavorite(article)}
+                  className="text-red-600 hover:text-red-800"
+                >
+                  {savedUrls.has(article.url) ? "❤️" : "🤍"}
+                </button>
+              </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {savedUrls.size > 0 && (
+        <div
+          onClick={() => router.push("/myFav")}
+          className="fixed bottom-4 right-4 bg-white border shadow-lg rounded-full px-4 py-2 text-sm text-blue-600 hover:text-blue-800 cursor-pointer transition-all"
+        >
+          Voir mes favoris
         </div>
       )}
     </div>
