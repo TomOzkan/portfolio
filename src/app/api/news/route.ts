@@ -12,6 +12,7 @@ const sourcesEN = [
   "analyticsvidhya.com",
   "venturebeat.com",
   "zdnet.com",
+  "datafloq.com",
 ].join(",");
 
 const sourcesFR = [
@@ -22,6 +23,7 @@ const sourcesFR = [
   "journaldunet.com",
   "silicon.fr",
   "larevuedudigital.com",
+  "blog.ippon.fr",
 ].join(",");
 
 const buildQuery = (topic: string) => {
@@ -43,9 +45,12 @@ const buildQuery = (topic: string) => {
     data: [
       '"big data"',
       '"data lake"',
-      '"data analytics"',
       '"data warehouse"',
-      '"ETL pipeline"',
+      '"hadoop"',
+      '"Spark"',
+      '"Kafka"',
+      '"Data center"',
+      '"Massive data"',
     ],
     kubernetes: [
       '"Kubernetes"',

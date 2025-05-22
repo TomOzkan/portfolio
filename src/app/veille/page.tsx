@@ -10,7 +10,7 @@ const TOPICS = [
   { key: "default", label: "Tout" },
   { key: "devops", label: "DevOps" },
   { key: "cloud", label: "Cloud" },
-  { key: "data", label: "Data" },
+  { key: "data", label: "BigData" },
   { key: "kubernetes", label: "Kubernetes" },
 ];
 
