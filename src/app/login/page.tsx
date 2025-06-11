@@ -94,6 +94,16 @@ export default function LoginPage() {
             S&apos;inscrire
           </button>
         </p>
+
+        <p className="text-sm text-center text-gray-500">
+          <button
+            type="button"
+            onClick={() => router.push("/myFav?juryMode=true")}
+            className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+          >
+            Accès (vérif) pour InstitutG4
+          </button>
+        </p>
       </form>
     </div>
   );

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { User } from "@supabase/supabase-js";
 
 export default function MyFavPage() {
@@ -18,35 +18,72 @@ export default function MyFavPage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const juryMode = searchParams.get("juryMode") === "true";
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) router.push("/login");
-      else setUser(data.user);
-    });
-  }, [router]);
+    if (!juryMode) {
+      supabase.auth.getUser().then(({ data }) => {
+        if (!data.user) router.push("/login");
+        else setUser(data.user);
+      });
+    } else {
+      // In jury mode, we don't need to set the user, but we can stop loading if needed.
+      // Fetching will be handled in the next useEffect.
+    }
+  }, [router, juryMode]);
 
   useEffect(() => {
-    if (user) {
+    setLoading(true);
+    if (juryMode) {
+      supabase
+        .from("saved_articles")
+        .select("*")
+        .order("published_at", { ascending: false })
+        .then(({ data, error }) => {
+          if (error) {
+            console.error("Error fetching articles in jury mode:", error);
+            setArticles([]);
+          } else {
+            setArticles(data || []);
+          }
+          setLoading(false);
+        });
+    } else if (user) {
       supabase
         .from("saved_articles")
         .select("*")
         .eq("user_id", user.id)
         .order("published_at", { ascending: false })
-        .then(({ data }) => {
-          setArticles(data || []);
+        .then(({ data, error }) => {
+          if (error) {
+            console.error("Error fetching user articles:", error);
+            setArticles([]);
+          } else {
+            setArticles(data || []);
+          }
           setLoading(false);
         });
+    } else if (!juryMode && !user) {
+      // If not in jury mode and no user, don't fetch, useEffect for auth will redirect.
+      // We can set loading to false if nothing is actively being fetched for this condition.
+      // However, the auth redirect should ideally happen before this becomes an issue.
+      // setLoading(false); // Optional: depending on desired behavior before redirect
     }
-  }, [user]);
+  }, [user, juryMode]);
 
   return (
     <div className="p-6 mb-auto min-h-screen">
+      {juryMode && (
+        <div className="bg-yellow-200 text-yellow-800 p-3 rounded-md text-center mb-6">
+          Jury Viewing Mode: All articles displayed.
+        </div>
+      )}
       <h1 className="text-3xl font-bold mb-6">Mes favoris</h1>
       {loading ? (
-        <p>Chargement...</p>
+        <p>Chargement des articles...</p>
       ) : articles.length === 0 ? (
-        <p>Aucun article sauvegardé pour le moment.</p>
+        <p>{juryMode ? "Aucun article trouvé." : "Aucun article sauvegardé pour le moment."}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article, idx) => (
