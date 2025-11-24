@@ -160,9 +160,6 @@ export default function About() {
                                     <span className="px-2 py-1 rounded bg-white/5 text-xs text-muted-foreground border border-white/10">PHP</span>
                                     <span className="px-2 py-1 rounded bg-white/5 text-xs text-muted-foreground border border-white/10">SQL</span>
                                 </div>
-                                <a href="#" className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all">
-                                    {t.bento.latest.link} <ArrowUpRight size={18} />
-                                </a>
                             </div>
 
                             {/* Logo Visual Representation */}
